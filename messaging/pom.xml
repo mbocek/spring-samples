@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>messaging</artifactId>
+	<packaging>pom</packaging>
+
+	<name>messaging</name>
+
+	<parent>
+		<groupId>org.sample.spring.boot</groupId>
+		<artifactId>samples</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<profiles>
+		<profile>
+			<id>kafka</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>java</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<mainClass>kafka.Kafka</mainClass>
+							<arguments>
+								<argument>${basedir}/src/main/resources/server.properties</argument>
+							</arguments>
+					        <systemProperties>
+					            <systemProperty>
+					                <key>log4j.configuration</key>
+					                <value>file://${basedir}/src/main/resources/log4j.properties</value>
+					            </systemProperty>
+					        </systemProperties>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<dependencies>
+				<dependency>
+				    <groupId>org.apache.kafka</groupId>
+				    <artifactId>kafka_2.8.2</artifactId>
+				    <version>0.8.1</version>
+				</dependency>
+			</dependencies>
+			
+			<properties>
+				<maven.exec.skip>false</maven.exec.skip>
+			</properties>
+    	</profile>
+
+		<profile>
+			<id>zookeeper</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<configuration>
+							<mainClass>org.apache.zookeeper.server.quorum.QuorumPeerMain</mainClass>
+							<arguments>
+								<argument>${basedir}/src/main/resources/zookeeper.properties</argument>
+							</arguments>
+					        <systemProperties>
+					            <systemProperty>
+					                <key>log4j.configuration</key>
+					                <value>file://${basedir}/src/main/resources/log4j.properties</value>
+					            </systemProperty>
+					        </systemProperties>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+
+			<dependencies>
+				<dependency>
+				    <groupId>org.apache.zookeeper</groupId>
+				    <artifactId>zookeeper</artifactId>
+				    <version>3.4.6</version>
+				</dependency>
+			</dependencies>
+			
+			<properties>
+				<maven.exec.skip>false</maven.exec.skip>
+			</properties>
+    	</profile>
+    	
+	</profiles>
+</project>
