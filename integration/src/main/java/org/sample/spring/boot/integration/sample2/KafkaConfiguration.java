@@ -20,6 +20,8 @@ package org.sample.spring.boot.integration.sample2;
 
 import javax.inject.Inject;
 
+import kafka.serializer.StringDecoder;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,6 +62,7 @@ public class KafkaConfiguration {
 		KafkaMessageDrivenChannelAdapter adapter = new KafkaMessageDrivenChannelAdapter(
 				new KafkaMessageListenerContainer(kafkaConnectionFactory(), "sample"));
 	   adapter.setOutputChannel(upcase);
+	   adapter.setPayloadDecoder(new StringDecoder(null));
 	   return adapter;
 	}
 }

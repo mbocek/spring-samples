@@ -18,15 +18,12 @@
  */
 package org.sample.spring.boot.integration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
+import kafka.serializer.StringEncoder;
 import kafka.utils.TestUtils;
 
 import org.junit.Test;
@@ -40,10 +37,10 @@ public class MessageProducer {
 	@Test
 	public void sendMessage() {
 		Properties properties = TestUtils.getProducerConfig("localhost:" + 9092);
-
+		properties.put("serializer.class", StringEncoder.class.getName());
 		ProducerConfig pConfig = new ProducerConfig(properties);
 		Producer<String, String> producer = new Producer<String, String>(pConfig);
-		KeyedMessage<String, String> data = new KeyedMessage<String, String>("sample", "test");
+		KeyedMessage<String, String> data = new KeyedMessage<String, String>("sample", "test test2");
 		producer.send(data);
 		producer.close();
 	}
