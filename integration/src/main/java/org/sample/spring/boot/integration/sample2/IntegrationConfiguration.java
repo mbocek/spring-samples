@@ -21,10 +21,12 @@ package org.sample.spring.boot.integration.sample2;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.channel.MessageChannels;
+import org.springframework.integration.splitter.DefaultMessageSplitter;
 import org.springframework.messaging.MessageChannel;
 
 /**
@@ -34,6 +36,7 @@ import org.springframework.messaging.MessageChannel;
 @Configuration
 @EnableAutoConfiguration
 @IntegrationComponentScan
+@ImportResource("application-context.xml")
 public class IntegrationConfiguration {
 	
 	@Bean
@@ -45,9 +48,16 @@ public class IntegrationConfiguration {
 	public IntegrationFlow upcaseFlow() {
 		return IntegrationFlows
 					.from("upcase")
-					.split()
+					.split(splitter(), null)
 					.transform("payload.toUpperCase()")
-					.aggregate()
+					.channel("nullChannel")
 					.get();
+	}
+
+	@Bean
+	public DefaultMessageSplitter splitter() {
+		DefaultMessageSplitter splitter = new DefaultMessageSplitter();
+		splitter.setDelimiters(" ");
+		return splitter;
 	}
 }

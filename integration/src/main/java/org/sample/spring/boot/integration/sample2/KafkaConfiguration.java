@@ -61,8 +61,10 @@ public class KafkaConfiguration {
 	public MessageProducer kafkaMessageDrivenChannelAdapter() {
 		KafkaMessageDrivenChannelAdapter adapter = new KafkaMessageDrivenChannelAdapter(
 				new KafkaMessageListenerContainer(kafkaConnectionFactory(), "sample"));
-	   adapter.setOutputChannel(upcase);
 	   adapter.setPayloadDecoder(new StringDecoder(null));
+	   adapter.setKeyDecoder(new StringDecoder(null));
+	   adapter.setAutoCommitOffset(true);
+	   adapter.setOutputChannel(upcase);
 	   return adapter;
 	}
 }

@@ -23,6 +23,7 @@ import java.util.Collection;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -36,6 +37,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 @Configuration
 @EnableAutoConfiguration
 @IntegrationComponentScan
+@ImportResource("application-context.xml")
 public class AppConfiguration {
 	
 	@MessagingGateway
