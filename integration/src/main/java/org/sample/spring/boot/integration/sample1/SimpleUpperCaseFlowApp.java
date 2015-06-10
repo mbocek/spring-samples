@@ -16,25 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.sample.spring.boot.integration.sample2;
+package org.sample.spring.boot.integration.sample1;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.sample.spring.boot.integration.sample1.AppConfiguration.Upcase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-@SpringBootApplication
-public class Application {
-	private static final Logger log = LoggerFactory.getLogger(Application.class);	
+public class SimpleUpperCaseFlowApp {
+	private static final Logger log = LoggerFactory.getLogger(SimpleUpperCaseFlowApp.class);	
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext ctx = SpringApplication.run(new Object[] {IntegrationConfiguration.class, 
-				KafkaConfiguration.class}, args);
+		ConfigurableApplicationContext ctx = SpringApplication.run(AppConfiguration.class, args);
 		ctx.registerShutdownHook();
+		
+		List<String> strings = Arrays.asList("foo", "bar");
+		log.info("Transformed strings: {}", ctx.getBean(Upcase.class).upcase(strings));
+		ctx.close();
 	}
 }
